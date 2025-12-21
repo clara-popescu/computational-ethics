@@ -126,9 +126,6 @@ function animateDotMovement(newRatios) {
   });
 }
 
-// ===== SCROLL TRIGGER =====
-gsap.registerPlugin(ScrollTrigger);
-
 ScrollTrigger.create({
   trigger: "#section1",
   start: "top+=10 top",
@@ -147,80 +144,46 @@ window.addEventListener("resize", () => {
 });
 
 
+//page 2
+const pinDuration = window.innerHeight * 3;
 
-
-// page 2
-// donut chart with d3.js
-const colors = ["#FDC800", "#fbf1b3ff"];
-
-function createDonut(selector, data) {
-  const svg = d3.select(selector);
-  
-  //get width
-  const svgNode = svg.node();
-  const width = svgNode.getBoundingClientRect().width;
-  const height = svgNode.getBoundingClientRect().height;
-
-  // SVG size to match parent width
-  svg.attr("width", width).attr("height", height);
-
-  const g = svg.append("g")
-    .attr("transform", `translate(${width / 2}, ${height / 2})`);
-
-
-  const maxScale = 1.15;
-  const padding = 10;
-  const radius = (Math.min(width, height) / 2 - padding) / maxScale;
-  const arc = d3.arc().innerRadius(radius * 0.55).outerRadius(radius);
-  const pie = d3.pie().value(d => d);
-
-  const paths = g.selectAll("path")
-      .data(pie(data))
-      .enter()
-      .append("path")
-      .attr("fill", (d, i) => colors[i])
-      .each(function(d) { this._current = d; })
-      .attr("d", arc);
-
-  const centerText = g.append("text")
-      .attr("text-anchor", "middle")
-      .attr("dy", "0.35em")
-      .style("font-size", "32px")
-      .style("opacity", 0)
-      .text("");
-
-  return function animate(scaleAmount, textOpacity) {
-    paths.attr("transform", (d, i) => i === 0 ? `scale(${scaleAmount})` : "scale(1)");
-
-    centerText
-      .style("opacity", textOpacity)
-      .text("74%");
-  };
-}
-
-
-
-const updateDonut = createDonut("#donut", [74, 26]);
-
-const tl = gsap.timeline({
-  scrollTrigger: {
-    trigger: "#section2",
-    start: "top top",
-    end: "+=2000",
-    scrub: true,
-    pin: true
-  }
+ScrollTrigger.create({
+  trigger: "#section2",
+  start: "top top",
+  end: () => "+=" + pinDuration,
+  pin: true,
+  pinSpacing: true
 });
 
-tl.to({}, {
-  duration: 1,
-  onUpdate() {
-    const t = this.progress();
-    const inflate = 1 + Math.sin(t * Math.PI) * 0.15;
-    const opacity = Math.min(t * 2, 1);
-
-    updateDonut(inflate, opacity);
+// ----- TEXT 1 -----
+gsap.fromTo(
+  "#section2ScrollText1",
+  { yPercent: 100 },
+  { yPercent: -300,
+    ease: "none",
+    scrollTrigger: {
+      trigger: "#section2",
+      start: "top top",
+      end: () => "+=" + pinDuration * 0.45,
+      scrub: true
+    }
   }
-});
+);
+
+
+// ----- TEXT 2 -----
+gsap.fromTo(
+  "#section2ScrollText2",
+  { yPercent: 300 },
+  { yPercent: -300,
+    ease: "none",
+    scrollTrigger: {
+      trigger: "#section2",
+      start: "top top",
+      end: () => "+=" + pinDuration * 0.45,
+      scrub: true
+    }
+  }
+);
 
 

@@ -234,3 +234,101 @@ gsap.utils.toArray(["#text-2", "#text-3", "#text-4", "#text-5"]).forEach((el, i)
   }
   );
 }); -->
+
+
+
+<!-- donut chart page 2 -->
+ <!-- <div class="w-4/5 m-auto flex flex-row items-center justify-between h-screen" id="section2">
+    <div class="w-1/3 flex justify-center items-center">
+        <svg id="donut" width="300" viewBox="0 0 300 300"></svg>
+    </div>
+
+    <div class="w-3/5 text-xl">
+        <p>While the usage of social media to promote campaigns is not new, taking advantage of imperfect algorithms can fuel <span class="border-b-4 border-yellow-300">political polarisation</span> and 
+            <span class="relative inline-block px-2 py-1">
+                <span class="relative z-10">promote division</span>
+                <svg class="absolute inset-0 w-full h-full -z-10 pointer-events-none"  xmlns="http://www.w3.org/2000/svg" viewBox="-1200 -1800 1250 400" width="1133.3px" height="339.18px" preserveAspectRatio="none">
+                    <path style="fill: none; stroke: rgb(255, 224, 32); stroke-width: 43px; stroke-linecap: round; stroke-linejoin: bevel;" d="M -509.362 -1478.246 C -605.47 -1459.195 -715.196 -1459.614 -813.876 -1459.614 C -894.037 -1459.614 -952.079 -1471.483 -1029.339 -1490.921 C -1085.243 -1504.986 -1176.088 -1562.709 -1138.612 -1605.161 C -1103.714 -1644.693 -1004.827 -1683.432 -952.979 -1696.646 C -902.956 -1709.394 -843.021 -1724.752 -792.372 -1735.922 C -695.289 -1757.332 -619.249 -1749.754 -520.073 -1750.107 C -444.758 -1750.375 -328.888 -1723.964 -278.822 -1712.681 C -178.841 -1690.148 -167.68 -1671.365 -71.994 -1628.628 C -24.34 -1607.344 16.401 -1552.852 -45.637 -1519.485 C -150.581 -1463.041 -249.255 -1456.075 -365.812 -1442.573 C -603.686 -1415.017 -907.677 -1392.372 -1064.037 -1438.045" id="object-2" transform="matrix(1, 0, 0, 1, 0, 4.547473508864641e-13)"/>
+                </svg>
+            </span>
+            <br>Through the integration of political messaging into trends and challenges, campaigns can subtly guide public opinion without presenting themselves as explicitly political.
+        </p>
+        <p class="pt-6">In this specific case, a study found that a newly created, politically neutral TikTok account was shown nearly <span class="bg-yellow-300">3 times more</span> far-right (pro-Georgescu) content than all other political content combined. Inauthentic or automated profiles further amplified this imbalance, creating a <span class="border-b-4 border-yellow-300">misleading perception</span> of Georgescu's popularity.</p>
+        <p class="pt-6">This kind of error produced by the algorithm that results in unfair outcomes is known as <span class="bg-yellow-300">algorithmic bias</span>.</p>
+    </div>
+</div> -->
+
+
+<!-- // page 2
+// donut chart with d3.js
+const colors = ["#FDC800", "#fbf1b3ff"];
+
+function createDonut(selector, data) {
+  const svg = d3.select(selector);
+  
+  //get width
+  const svgNode = svg.node();
+  const width = svgNode.getBoundingClientRect().width;
+  const height = svgNode.getBoundingClientRect().height;
+
+  // SVG size to match parent width
+  svg.attr("width", width).attr("height", height);
+
+  const g = svg.append("g")
+    .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+
+  const maxScale = 1.15;
+  const padding = 10;
+  const radius = (Math.min(width, height) / 2 - padding) / maxScale;
+  const arc = d3.arc().innerRadius(radius * 0.55).outerRadius(radius);
+  const pie = d3.pie().value(d => d);
+
+  const paths = g.selectAll("path")
+      .data(pie(data))
+      .enter()
+      .append("path")
+      .attr("fill", (d, i) => colors[i])
+      .each(function(d) { this._current = d; })
+      .attr("d", arc);
+
+  const centerText = g.append("text")
+      .attr("text-anchor", "middle")
+      .attr("dy", "0.35em")
+      .style("font-size", "32px")
+      .style("opacity", 0)
+      .text("");
+
+  return function animate(scaleAmount, textOpacity) {
+    paths.attr("transform", (d, i) => i === 0 ? `scale(${scaleAmount})` : "scale(1)");
+
+    centerText
+      .style("opacity", textOpacity)
+      .text("74%");
+  };
+}
+
+
+
+const updateDonut = createDonut("#donut", [74, 26]);
+
+const tl = gsap.timeline({
+  scrollTrigger: {
+    trigger: "#section2",
+    start: "top top",
+    end: "+=2000",
+    scrub: true,
+    pin: true
+  }
+});
+
+tl.to({}, {
+  duration: 1,
+  onUpdate() {
+    const t = this.progress();
+    const inflate = 1 + Math.sin(t * Math.PI) * 0.15;
+    const opacity = Math.min(t * 2, 1);
+
+    updateDonut(inflate, opacity);
+  }
+}); -->
