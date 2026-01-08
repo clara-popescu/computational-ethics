@@ -7,22 +7,22 @@ const totalDots = 189; // 18,908,650 -> one dot is 100,000 people
 const dotRadius = 7;
 const clusterSpacing = 250; // distance between clusters
 
-// ===== CANDIDATES =====
+// data
 let candidates = [
-  { name: "Calin Georgescu", ratio: 0.051, color: "#FFE020" },
+  { name: "Călin Georgescu", ratio: 0.051, color: "#FFE020" },
   { name: "Elena Lasconi", ratio: 0.152, color: "#D1D5DC" },
   { name: "Marcel Ciolacu", ratio: 0.2568, color: "#D1D5DC" },
   { name: "George Simion", ratio: 0.176, color: "#D1D5DC" },
   { name: "Others", ratio: 0.3642, color: "#D1D5DC" }
 ];
 
-// ===== DOTS =====
+// dots
 let dots = [];
 for (let i = 0; i < totalDots; i++) {
   dots.push({ id: i, candidate: null, x: 0, y: 0, prevCandidate: null });
 }
 
-// ===== CONTAINER + SVG =====
+// container + svg
 const container = d3.select("#voteClusters");
 
 const svg = container
@@ -31,15 +31,15 @@ const svg = container
   .attr("height", "100%")
   .attr("preserveAspectRatio", "xMidYMid meet");
 
-// To always get real size
+// to always get real size
 function getSvgSize() {
   return container.node().getBoundingClientRect();
 }
 
-// ===== LABEL GROUP =====
+// labels
 const labelGroup = svg.append("g").attr("class", "labels");
 
-// ===== HELPER FUNCTIONS =====
+// helper functions
 function assignDots(ratios) {
   let cumSum = 0;
   const thresholds = ratios.map(r => {
@@ -82,7 +82,7 @@ function computePositions() {
 
   for (let i = 0; i < 300; i++) simulation.tick();
 
-  // Update labels
+  // update labels
   labelGroup.selectAll("text")
     .data(candidates)
     .join("text")
@@ -93,7 +93,7 @@ function computePositions() {
     .text(d => d.name);
 }
 
-// ===== INITIAL STATE =====
+// initial state
 assignDots(candidates.map(c => c.ratio));
 computePositions();
 
@@ -106,7 +106,7 @@ const circles = svg.selectAll("circle")
   .attr("cy", d => d.y)
   .attr("fill", d => candidates.find(c => c.name === d.candidate).color);
 
-// ===== ANIMATE DOT MOVEMENT =====
+// animate dots
 function animateDotMovement(newRatios) {
   dots.forEach(d => (d.prevCandidate = d.candidate));
 
@@ -128,14 +128,14 @@ function animateDotMovement(newRatios) {
 
 ScrollTrigger.create({
   trigger: "#section1",
-  start: "top+=10 top",
+  start: "top+=30 top",
   onEnter: () =>
     animateDotMovement([0.229, 0.1917, 0.1914, 0.1386, 0.2493]), // new ratios
   onLeaveBack: () =>
     animateDotMovement([0.051, 0.152, 0.2568, 0.176, 0.3642]) // initial ratio
 });
 
-// ===== HANDLE RESIZE =====
+// handle resize
 window.addEventListener("resize", () => {
   computePositions();
   circles
@@ -144,7 +144,7 @@ window.addEventListener("resize", () => {
 });
 
 
-//page 2
+// page 2 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const pinDuration = window.innerHeight * 3;
 
 ScrollTrigger.create({
@@ -155,35 +155,66 @@ ScrollTrigger.create({
   pinSpacing: true
 });
 
-// ----- TEXT 1 -----
 gsap.fromTo(
-  "#section2ScrollText1",
+  "#section2TextWrapper",
   { yPercent: 100 },
-  { yPercent: -300,
+  { yPercent: -200,
     ease: "none",
     scrollTrigger: {
       trigger: "#section2",
       start: "top top",
-      end: () => "+=" + pinDuration * 0.45,
+      end: () => "+=" + pinDuration,
       scrub: true
     }
   }
 );
 
 
-// ----- TEXT 2 -----
-gsap.fromTo(
-  "#section2ScrollText2",
-  { yPercent: 300 },
-  { yPercent: -300,
-    ease: "none",
-    scrollTrigger: {
-      trigger: "#section2",
-      start: "top top",
-      end: () => "+=" + pinDuration * 0.45,
-      scrub: true
+// page 3 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const content = document.getElementById("content");
+const redactedItems = document.querySelectorAll(".redacted");
+
+// initial blur
+gsap.set(content, { filter: "blur(20px)" });
+
+// scroll triggered blur + reveal
+gsap.to(content, {
+  filter: "blur(0px)",
+  ease: "none",
+  scrollTrigger: {
+    trigger: '#section3',
+    start: "top top",
+    end: "+=130%",
+    scrub: true,
+    pin: true,
+    pinSpacing: true,
     }
   }
 );
 
 
+
+
+// page 4 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const strip = document.getElementById("timelineStrip");
+const timelineItems = strip.querySelectorAll(".timelineItem");
+const totalItems = timelineItems.length;
+
+// total distance to move left
+const distance = (totalItems - 1) * window.innerWidth;
+
+const totalScroll = window.innerWidth * (totalItems - 1)
+
+gsap.to(strip, {
+  x: -distance,
+  ease: "none",
+  scrollTrigger: {
+    trigger: "#timelineSection",
+    start: "top top",
+    end: `+=${totalScroll}`,
+    scrub: true,
+    pin: true
+    // markers: true
+  }
+});

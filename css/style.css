@@ -12,3 +12,21 @@
   height: 50px;
   background-color: rgb(47, 183, 47);
 } */
+
+/* page 3 */
+.redacted {
+  color: transparent;           
+  background-color: black;       
+  border-radius: 2px;            
+  cursor: pointer;
+  transition-duration: 1s;
+}
+
+/* reveal text on hover */
+.redacted:hover {
+  color: inherit;                
+  background-color: transparent; 
+  transition-duration: 1s;
+}
+
+
