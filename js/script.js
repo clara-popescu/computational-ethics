@@ -1,4 +1,4 @@
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 gsap.registerPlugin(DrawSVGPlugin);
 
 
@@ -128,7 +128,7 @@ function animateDotMovement(newRatios) {
 
 ScrollTrigger.create({
   trigger: "#section1",
-  start: "top+=30 top",
+  start: "top top",
   onEnter: () =>
     animateDotMovement([0.229, 0.1917, 0.1914, 0.1386, 0.2493]), // new ratios
   onLeaveBack: () =>
@@ -171,29 +171,75 @@ gsap.fromTo(
 
 
 // page 3 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const content = document.getElementById("content");
+// const content = document.getElementById("content");
+// const redactedItems = document.querySelectorAll(".redacted");
+
+// // initial blur
+// gsap.set(content, { filter: "blur(20px)" });
+
+// // scroll triggered blur + reveal
+// gsap.to(content, {
+//   filter: "blur(0px)",
+//   ease: "none",
+//   scrollTrigger: {
+//     trigger: '#section3',
+//     start: "top top",
+//     end: "+=130%",
+//     scrub: true,
+//     pin: true,
+//     pinSpacing: true,
+//     }
+//   }
+// );
+
+
+const canvas = document.getElementById("blurCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = canvas.offsetWidth;
+canvas.height = canvas.offsetHeight;
+
+// draw blurred overlay
+ctx.filter = "blur(20px)";
+ctx.fillStyle = "rgba(255, 255, 255, 0.96)";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+// reset filter - for sharpness
+ctx.filter = "none";
+
+// instruction text on top
+// ctx.font = "32px sans-serif";
+// ctx.fillStyle = "rgba(0, 0, 0, 0.85)";
+// ctx.textAlign = "center";
+// ctx.textBaseline = "middle";
+// ctx.fillText(
+//   "Swipe to reveal",
+//   canvas.width / 2,
+//   canvas.height / 2
+// );
+
+
+
+// Erase blur on mousemove (optional: use a parent listener)
+document.getElementById("section3").addEventListener("mousemove", (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(x, y, 40, 0, Math.PI * 2);
+    ctx.fill();
+});
+
+// Reveal redacted spans on click
 const redactedItems = document.querySelectorAll(".redacted");
 
-// initial blur
-gsap.set(content, { filter: "blur(20px)" });
-
-// scroll triggered blur + reveal
-gsap.to(content, {
-  filter: "blur(0px)",
-  ease: "none",
-  scrollTrigger: {
-    trigger: '#section3',
-    start: "top top",
-    end: "+=130%",
-    scrub: true,
-    pin: true,
-    pinSpacing: true,
-    }
-  }
-);
-
-
-
+redactedItems.forEach(item => {
+  item.addEventListener("click", () => {
+    item.classList.add("revealed");
+  });
+});
 
 // page 4 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -210,7 +256,7 @@ gsap.to(strip, {
   x: -distance,
   ease: "none",
   scrollTrigger: {
-    trigger: "#timelineSection",
+    trigger: "#section4",
     start: "top top",
     end: `+=${totalScroll}`,
     scrub: true,
@@ -218,3 +264,45 @@ gsap.to(strip, {
     // markers: true
   }
 });
+
+
+
+
+
+
+// snapping /////////////
+// const snapSections = ["#intro", "#section1", "#section2", "#section3", "#section5"];
+
+// // Helper to get the current offsetTop of each section
+// function getSnapPoints() {
+//   return snapSections
+//     .map(sel => document.querySelector(sel))
+//     .filter(el => el) // remove nulls
+//     .map(el => el.offsetTop);
+// }
+
+// Vertical snapping ScrollTrigger
+// ScrollTrigger.create({
+//   trigger: document.body,
+//   start: "top top",
+//   end: "bottom bottom",
+//   scrub: true,
+//   snap: {
+//     snapTo: value => {
+//       const points = getSnapPoints();
+//       // find closest point
+//       let closest = points[0];
+//       let minDist = Math.abs(value - closest);
+//       for (let i = 1; i < points.length; i++) {
+//         const dist = Math.abs(value - points[i]);
+//         if (dist < minDist) {
+//           closest = points[i];
+//           minDist = dist;
+//         }
+//       }
+//       return closest;
+//     },
+//     duration: 1.2,      // exaggerated snap
+//     ease: "power3.out"
+//   }
+// });

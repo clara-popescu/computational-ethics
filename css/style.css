@@ -22,8 +22,8 @@
   transition-duration: 1s;
 }
 
-/* reveal text on hover */
-.redacted:hover {
+/* reveal text */
+.redacted.revealed {
   color: inherit;                
   background-color: transparent; 
   transition-duration: 1s;

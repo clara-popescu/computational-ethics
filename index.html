@@ -9,7 +9,7 @@
 </head>
 <body>
     <!-- intro page -->
-    <div class="w-4/5 m-auto h-screen grid place-items-center">
+    <div id="intro" class="w-4/5 m-auto h-screen grid place-items-center">
         <div class="absolute flex justify-around">
             <object data="assets/EL.svg" class="h-screen"> </object>
             <object data="assets/CG.svg" class="h-screen"> </object>
@@ -21,7 +21,7 @@
     </div>
 
     <!-- page 1 -->
-    <div id="section1" class="h-screen flex flex-col">
+    <div id="section1" class="h-screen flex flex-col pt-20 mb-20">
         <div class="h-1/2">
             <p class="text-xl text-center pt-[15vh] w-4/5 mx-auto" id="text-1">At the end of 2024, Romanians across the globe were voting for their next president. In the first round of the 2 round voting process, there were more than 10 candidates including independent candidate<br><span class="bg-yellow-300">Călin Georgescu</span>.<br>A week later, the Constitutional Court annulled the election due to foreign interference<br>and the <span class="border-b-4 border-yellow-300">manipulation of TikTok's algorithm</span> in Georgescu's favour.</p>
             <p class="text-xl text-center pt-4 w-3/4 mx-auto" id="text-2">Despite being virtually unknown before the elections, and expected to earn minimal votes (5.1%), he somehow managed to win over the majority of the population (22.9%).</p>
@@ -38,7 +38,7 @@
             <object data="assets/saviour-ht.svg" class="w-auto h-full object-contain justify-self-start"></object>
         </div>
 
-        <div id="section2TextWrapper" class="absolute inset-0 flex flex-col items-center gap-200 z-10">
+        <div id="section2TextWrapper" class="absolute inset-0 flex flex-col items-center gap-100 z-10">
             <div id="section2ScrollText1" class="w-3/5 text-xl bg-neutral-50 p-8 rounded-xl border-3 border-stone-700">
                 <p>While the usage of social media to promote campaigns is not new, taking advantage of imperfect algorithms can fuel <span class="border-b-4 border-yellow-300">political polarisation</span> and 
                     <span class="relative inline-block px-2 py-1">
@@ -78,7 +78,7 @@
 
 
     <!-- page 3 -->
-    <div id="section3" class="w-full h-screen">
+    <div id="section3" class="w-full h-screen relative">
         <div id="content" class="w-3/5 h-full mx-auto flex items-center justify-center text-center">
             <p class="leading-relaxed text-lg">
                 There is a blurred line between conventional political advertising and the use of social media algorithms to manipulate public opinion.
@@ -88,11 +88,13 @@
                 TikTok’s viralisation algorithm, which is based on <span class="redacted">undisclosed criteria</span>, has been shown to amplify political content, including <span class="redacted">hard-right material</span> during the Polish election, raising concerns about how these systems can influence democratic processes.
             </p>
         </div>
+
+        <canvas id="blurCanvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
     </div>
 
 
     <!-- page 4 -->
-    <div id="timelineSection" class="w-full h-screen relative overflow-hidden">
+    <div id="section4" class="w-full h-screen relative overflow-hidden">
 
         <div class="relative">
             <p class="absolute w-3/5 left-1/2 top-[10vh] -translate-x-1/2 text-center text-lg">
@@ -136,9 +138,27 @@
 
 
     <!-- page 5 -->
-    <div class="h-screen bg-yellow-300">
-        <h1>hi</h1>
+    <div id="section5" class="h-screen flex flex-col items-center justify-center">
+        <h1 class="w-3/5 text-xl text-center">
+        Minimising the risks of algorithmic bias, like those seen in this case study, requires a multifaceted approach and <span class="border-b-4 border-yellow-300">collective effort</span>.
+        <br><br>
+        <span class="bg-yellow-300">Political literacy</span> is essential, helping citizens recognise manipulation, understand political jargon, and increase overall awareness.
+        <br><br>
+        Social media platforms must also be held accountable, with mechanisms to detect and address algorithmic bias, especially in critical events such as elections.
+        <br><br>
+        In the meantime, personal responsibility remains the most effective way for individuals to avoid falling prey to manipulation and to protect democratic processes.
+        <br><br>
+        <a href="https://app.milanote.com/1V9J5510QRpodV?p=lYFcBjIQWnO" target=”_blank”>
+            <span class="relative inline-block px-2 py-1">
+                <span class="relative z-10 underline">Supporting documents</span>
+                <svg class="absolute -inset-x-4 -inset-y-2 w-[calc(100%+2rem)] h-[calc(100%+1rem)] z-0 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="-1200 -1800 1250 400" width="1133.3px" height="339.18px" preserveAspectRatio="none">
+                    <path style="fill: none; stroke: rgb(255, 224, 32); stroke-width: 43px; stroke-linecap: round; stroke-linejoin: bevel;" d="M -509.362 -1478.246 C -605.47 -1459.195 -715.196 -1459.614 -813.876 -1459.614 C -894.037 -1459.614 -952.079 -1471.483 -1029.339 -1490.921 C -1085.243 -1504.986 -1176.088 -1562.709 -1138.612 -1605.161 C -1103.714 -1644.693 -1004.827 -1683.432 -952.979 -1696.646 C -902.956 -1709.394 -843.021 -1724.752 -792.372 -1735.922 C -695.289 -1757.332 -619.249 -1749.754 -520.073 -1750.107 C -444.758 -1750.375 -328.888 -1723.964 -278.822 -1712.681 C -178.841 -1690.148 -167.68 -1671.365 -71.994 -1628.628 C -24.34 -1607.344 16.401 -1552.852 -45.637 -1519.485 C -150.581 -1463.041 -249.255 -1456.075 -365.812 -1442.573 C -603.686 -1415.017 -907.677 -1392.372 -1064.037 -1438.045" id="object-2" transform="matrix(1, 0, 0, 1, 0, 4.547473508864641e-13)"/>
+                </svg>
+            </span>
+        </a>
+        <h1>go back to the top btn</h1>
     </div>
+
 
 
 
@@ -148,6 +168,7 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script src="js/script.js"></script>
