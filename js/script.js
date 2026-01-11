@@ -5,7 +5,7 @@ gsap.registerPlugin(DrawSVGPlugin);
 // page 1 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const totalDots = 189; // 18,908,650 -> one dot is 100,000 people
 const dotRadius = 7;
-const clusterSpacing = 250; // distance between clusters
+const clusterSpacing = 250;
 
 // data
 let candidates = [
@@ -171,28 +171,6 @@ gsap.fromTo(
 
 
 // page 3 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// const content = document.getElementById("content");
-// const redactedItems = document.querySelectorAll(".redacted");
-
-// // initial blur
-// gsap.set(content, { filter: "blur(20px)" });
-
-// // scroll triggered blur + reveal
-// gsap.to(content, {
-//   filter: "blur(0px)",
-//   ease: "none",
-//   scrollTrigger: {
-//     trigger: '#section3',
-//     start: "top top",
-//     end: "+=130%",
-//     scrub: true,
-//     pin: true,
-//     pinSpacing: true,
-//     }
-//   }
-// );
-
-
 const canvas = document.getElementById("blurCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -218,9 +196,7 @@ ctx.filter = "none";
 //   canvas.height / 2
 // );
 
-
-
-// Erase blur on mousemove (optional: use a parent listener)
+// erase blur on mousemove
 document.getElementById("section3").addEventListener("mousemove", (e) => {
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -232,7 +208,7 @@ document.getElementById("section3").addEventListener("mousemove", (e) => {
     ctx.fill();
 });
 
-// Reveal redacted spans on click
+// reveal redacted spans on click
 const redactedItems = document.querySelectorAll(".redacted");
 
 redactedItems.forEach(item => {
@@ -241,8 +217,8 @@ redactedItems.forEach(item => {
   });
 });
 
-// page 4 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// page 4 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const strip = document.getElementById("timelineStrip");
 const timelineItems = strip.querySelectorAll(".timelineItem");
 const totalItems = timelineItems.length;
@@ -264,45 +240,3 @@ gsap.to(strip, {
     // markers: true
   }
 });
-
-
-
-
-
-
-// snapping /////////////
-// const snapSections = ["#intro", "#section1", "#section2", "#section3", "#section5"];
-
-// // Helper to get the current offsetTop of each section
-// function getSnapPoints() {
-//   return snapSections
-//     .map(sel => document.querySelector(sel))
-//     .filter(el => el) // remove nulls
-//     .map(el => el.offsetTop);
-// }
-
-// Vertical snapping ScrollTrigger
-// ScrollTrigger.create({
-//   trigger: document.body,
-//   start: "top top",
-//   end: "bottom bottom",
-//   scrub: true,
-//   snap: {
-//     snapTo: value => {
-//       const points = getSnapPoints();
-//       // find closest point
-//       let closest = points[0];
-//       let minDist = Math.abs(value - closest);
-//       for (let i = 1; i < points.length; i++) {
-//         const dist = Math.abs(value - points[i]);
-//         if (dist < minDist) {
-//           closest = points[i];
-//           minDist = dist;
-//         }
-//       }
-//       return closest;
-//     },
-//     duration: 1.2,      // exaggerated snap
-//     ease: "power3.out"
-//   }
-// });
