@@ -179,7 +179,7 @@ canvas.height = canvas.offsetHeight;
 
 // draw blurred overlay
 ctx.filter = "blur(20px)";
-ctx.fillStyle = "rgba(255, 255, 255, 0.96)";
+ctx.fillStyle = "rgba(255, 255, 255, 0.90)";
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 // reset filter - for sharpness
